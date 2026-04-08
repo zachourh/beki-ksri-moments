@@ -22,6 +22,8 @@ body {
 body {
   display: grid;
   place-items: center;
+  min-height: 100vh;
+  min-height: 100dvh;
   background:
     radial-gradient(circle at top, rgba(100, 136, 175, 0.25), transparent 30%),
     linear-gradient(160deg, #04070c 0%, #0b1720 45%, #152734 100%);
@@ -32,6 +34,7 @@ body {
 .page-shell {
   width: 100%;
   min-height: 100vh;
+  min-height: 100dvh;
   display: grid;
   place-items: center;
   padding: 24px;
@@ -279,38 +282,96 @@ body {
 }
 
 @media (max-width: 560px) {
+  html,
+  body,
+  .page-shell,
+  .story-frame {
+    height: 100vh;
+    height: 100svh;
+  }
+
   .page-shell {
     padding: 0;
   }
 
   .story-frame {
     width: 100vw;
-    min-height: 100vh;
+    min-height: 100svh;
     border-radius: 0;
+  }
+
+  .story-header {
+    padding: calc(18px + env(safe-area-inset-top, 0px)) 18px 0;
+    gap: 10px;
+  }
+
+  .brand-lockup {
+    gap: 10px;
+  }
+
+  .brand-mark {
+    width: 46px;
+    height: 46px;
+  }
+
+  .eyebrow {
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+  }
+
+  .brand-lockup h1 {
+    font-size: 1.05rem;
+  }
+
+  .story-chip {
+    padding: 8px 13px;
+    font-size: 0.74rem;
   }
 
   .story-footer {
     left: 14px;
     right: 14px;
-    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    padding: 10px 12px;
   }
 
   .story-detail {
-    left: 24px;
-    right: 20px;
-    bottom: calc(128px + env(safe-area-inset-bottom, 0px));
+    left: 18px;
+    right: 16px;
+    bottom: calc(92px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .story-detail h2 {
+    margin-bottom: 10px;
+    max-width: 15ch;
+    font-size: clamp(1.35rem, 8vw, 2rem);
+  }
+
+  .story-detail p {
+    max-width: 44ch;
+    font-size: 0.84rem;
+    line-height: 1.35;
   }
 
   .story-nav {
-    gap: 8px;
+    gap: 6px;
   }
 
   .story-dot {
-    width: 50px;
-    height: 50px;
+    width: 42px;
+    height: 42px;
   }
 
   .scroll-indicator {
-    right: 18px;
+    right: 12px;
+  }
+
+  .scroll-track {
+    width: 8px;
+    height: 108px;
+  }
+
+  .scroll-thumb {
+    height: 22px;
   }
 }
