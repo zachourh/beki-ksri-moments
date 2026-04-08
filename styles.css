@@ -143,7 +143,7 @@ body {
   position: absolute;
   left: 28px;
   right: 24px;
-  bottom: 132px;
+  bottom: calc(132px + env(safe-area-inset-bottom, 0px));
   z-index: 2;
 }
 
@@ -169,7 +169,7 @@ body {
   position: absolute;
   left: 20px;
   right: 20px;
-  bottom: 18px;
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
   padding: 14px 16px;
   border: 1px solid var(--panel-border);
   border-radius: 28px;
@@ -292,12 +292,13 @@ body {
   .story-footer {
     left: 14px;
     right: 14px;
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
   }
 
   .story-detail {
     left: 24px;
     right: 20px;
-    bottom: 128px;
+    bottom: calc(128px + env(safe-area-inset-bottom, 0px));
   }
 
   .story-nav {
