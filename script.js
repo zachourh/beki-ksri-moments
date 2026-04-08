@@ -103,6 +103,9 @@ let showingIncoming = false;
 let wheelLocked = false;
 const preloadedImages = new Set();
 let idlePreloadStarted = false;
+let touchStartY = null;
+let touchCurrentY = null;
+const swipeThreshold = 42;
 
 function getActiveCategory() {
   return categories[activeIndex];
@@ -281,6 +284,59 @@ frame.addEventListener(
     movePoint(event.deltaY > 0 ? 1 : -1);
   },
   { passive: false }
+);
+
+frame.addEventListener(
+  "touchstart",
+  (event) => {
+    if (event.touches.length !== 1) {
+      touchStartY = null;
+      touchCurrentY = null;
+      return;
+    }
+
+    touchStartY = event.touches[0].clientY;
+    touchCurrentY = touchStartY;
+  },
+  { passive: true }
+);
+
+frame.addEventListener(
+  "touchmove",
+  (event) => {
+    if (touchStartY === null || event.touches.length !== 1) {
+      return;
+    }
+
+    touchCurrentY = event.touches[0].clientY;
+    const deltaY = touchCurrentY - touchStartY;
+
+    if (Math.abs(deltaY) > 10) {
+      event.preventDefault();
+    }
+  },
+  { passive: false }
+);
+
+frame.addEventListener(
+  "touchend",
+  () => {
+    if (touchStartY === null || touchCurrentY === null) {
+      touchStartY = null;
+      touchCurrentY = null;
+      return;
+    }
+
+    const deltaY = touchCurrentY - touchStartY;
+
+    if (Math.abs(deltaY) >= swipeThreshold) {
+      movePoint(deltaY < 0 ? 1 : -1);
+    }
+
+    touchStartY = null;
+    touchCurrentY = null;
+  },
+  { passive: true }
 );
 
 document.addEventListener("keydown", (event) => {
