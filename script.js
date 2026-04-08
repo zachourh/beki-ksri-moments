@@ -190,7 +190,7 @@ function getPointCaption(point, category) {
     return point.caption;
   }
 
-  return `Lorem ipsum dolor sit amet for ${point.label.toLowerCase()} in ${category.title.toLowerCase()}.`;
+  return "";
 }
 
 function updateBackground(imagePath) {
