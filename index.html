@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beki Ksri Moments Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="page-shell">
+    <section class="story-frame" aria-label="Beki Ksri story experience">
+      <div class="frame-background">
+        <div class="background-slide is-active" data-layer></div>
+        <div class="background-slide" data-layer></div>
+        <div class="background-vignette"></div>
+      </div>
+
+      <header class="story-header">
+        <div class="brand-lockup">
+          <div class="brand-mark" aria-hidden="true">BK</div>
+          <div>
+            <p class="eyebrow">Beki Ksri</p>
+            <h1>Moments</h1>
+          </div>
+        </div>
+
+        <div class="story-chip" id="storyChip">Adventures</div>
+      </header>
+
+      <section class="story-detail" aria-live="polite">
+        <h2 id="selectedPointTitle">Climb Kili</h2>
+        <p id="selectedPointCaption">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.</p>
+      </section>
+
+      <footer class="story-footer">
+        <nav class="story-nav" id="storyNav" aria-label="Category navigation"></nav>
+      </footer>
+
+      <aside class="scroll-indicator" aria-hidden="true">
+        <div class="scroll-track">
+          <div class="scroll-thumb" id="scrollThumb"></div>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
