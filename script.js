@@ -103,7 +103,9 @@ let showingIncoming = false;
 let wheelLocked = false;
 const preloadedImages = new Set();
 let idlePreloadStarted = false;
+let touchStartX = null;
 let touchStartY = null;
+let touchCurrentX = null;
 let touchCurrentY = null;
 const swipeThreshold = 42;
 
@@ -247,6 +249,21 @@ function setCategory(index) {
   applyState(true);
 }
 
+function moveCategory(direction) {
+  if (wheelLocked) {
+    return;
+  }
+
+  wheelLocked = true;
+  frame.classList.add("is-wheel-locked");
+  setCategory(activeIndex + direction);
+
+  window.setTimeout(() => {
+    wheelLocked = false;
+    frame.classList.remove("is-wheel-locked");
+  }, 460);
+}
+
 function movePoint(direction) {
   const points = getActiveCategory().points;
   const nextIndex = activePointIndex + direction;
@@ -277,11 +294,17 @@ frame.addEventListener(
   (event) => {
     event.preventDefault();
 
-    if (Math.abs(event.deltaY) < 12) {
+    const absX = Math.abs(event.deltaX);
+    const absY = Math.abs(event.deltaY);
+
+    if (absX > absY && absX >= 12) {
+      moveCategory(event.deltaX > 0 ? 1 : -1);
       return;
     }
 
-    movePoint(event.deltaY > 0 ? 1 : -1);
+    if (absY >= 12) {
+      movePoint(event.deltaY > 0 ? 1 : -1);
+    }
   },
   { passive: false }
 );
@@ -290,12 +313,16 @@ frame.addEventListener(
   "touchstart",
   (event) => {
     if (event.touches.length !== 1) {
+      touchStartX = null;
       touchStartY = null;
+      touchCurrentX = null;
       touchCurrentY = null;
       return;
     }
 
+    touchStartX = event.touches[0].clientX;
     touchStartY = event.touches[0].clientY;
+    touchCurrentX = touchStartX;
     touchCurrentY = touchStartY;
   },
   { passive: true }
@@ -304,14 +331,16 @@ frame.addEventListener(
 frame.addEventListener(
   "touchmove",
   (event) => {
-    if (touchStartY === null || event.touches.length !== 1) {
+    if (touchStartX === null || touchStartY === null || event.touches.length !== 1) {
       return;
     }
 
+    touchCurrentX = event.touches[0].clientX;
     touchCurrentY = event.touches[0].clientY;
+    const deltaX = touchCurrentX - touchStartX;
     const deltaY = touchCurrentY - touchStartY;
 
-    if (Math.abs(deltaY) > 10) {
+    if (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10) {
       event.preventDefault();
     }
   },
@@ -321,31 +350,46 @@ frame.addEventListener(
 frame.addEventListener(
   "touchend",
   () => {
-    if (touchStartY === null || touchCurrentY === null) {
+    if (touchStartX === null || touchStartY === null || touchCurrentX === null || touchCurrentY === null) {
+      touchStartX = null;
       touchStartY = null;
+      touchCurrentX = null;
       touchCurrentY = null;
       return;
     }
 
+    const deltaX = touchCurrentX - touchStartX;
     const deltaY = touchCurrentY - touchStartY;
 
-    if (Math.abs(deltaY) >= swipeThreshold) {
+    if (Math.abs(deltaX) >= swipeThreshold && Math.abs(deltaX) > Math.abs(deltaY)) {
+      moveCategory(deltaX < 0 ? 1 : -1);
+    } else if (Math.abs(deltaY) >= swipeThreshold) {
       movePoint(deltaY < 0 ? 1 : -1);
     }
 
+    touchStartX = null;
     touchStartY = null;
+    touchCurrentX = null;
     touchCurrentY = null;
   },
   { passive: true }
 );
 
 document.addEventListener("keydown", (event) => {
-  if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
+  if (event.key === "ArrowUp") {
     movePoint(-1);
   }
 
-  if (event.key === "ArrowDown" || event.key === "ArrowRight") {
+  if (event.key === "ArrowDown") {
     movePoint(1);
+  }
+
+  if (event.key === "ArrowLeft") {
+    moveCategory(-1);
+  }
+
+  if (event.key === "ArrowRight") {
+    moveCategory(1);
   }
 });
 
