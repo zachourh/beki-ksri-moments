@@ -300,6 +300,13 @@ body {
     border-radius: 0;
   }
 
+  .background-slide {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-color: #0b141b;
+  }
+
   .story-header {
     padding: calc(18px + env(safe-area-inset-top, 0px)) 18px 0;
     gap: 10px;
